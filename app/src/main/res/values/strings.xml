@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Crazy Notes</string>
+    <string name="note1">Some note</string>
+    <string name="content1">some content</string>
+    <string name="note2">To do</string>
+    <string name="content2">to do something</string>
+    <string name="note3">To buy</string>
+    <string name="content3">to buy something</string>
+    <string name="default_date">21.12.21</string>
 </resources>
