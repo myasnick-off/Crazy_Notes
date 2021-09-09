@@ -4,6 +4,6 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/purple_200"
-    android:name="com.example.crazynotes.ui.list.NotesListFragment"
-    tools:context=".ui.list.MainActivity" />
+    tools:context=".ui.details.NoteContentActivity">
+
+</androidx.fragment.app.FragmentContainerView>
