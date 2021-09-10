@@ -24,7 +24,8 @@ public class NoteContentActivity extends AppCompatActivity {
             Note note = getIntent().getParcelableExtra(KEY_NOTE_CONTENT);
             FragmentManager fragmentManager = getSupportFragmentManager();
 
-            fragmentManager.beginTransaction()
+            fragmentManager
+                    .beginTransaction()
                     .replace(R.id.container, NoteContentFragment.newInstance(note), "noteTag")
                     .commit();
         }
