@@ -68,7 +68,7 @@ public class NotesListFragment extends Fragment implements NotesListView {
     @Override
     public void showNotes(List<Note> notesList) {
         for (Note note : notesList) {
-            View noteItem = LayoutInflater.from(requireContext()).inflate(R.layout.note_item, container, false);
+            View noteItem = LayoutInflater.from(requireContext()).inflate(R.layout.item_note, container, false);
             noteItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
