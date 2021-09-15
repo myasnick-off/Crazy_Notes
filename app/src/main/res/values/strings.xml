@@ -18,7 +18,11 @@
     <string name="close_drawer">close</string>
     <string name="open_drawer">open</string>
     <string name="avatar_img">avatar</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="note4">Don\'t forget</string>
+    <string name="content4">Do not forget to smile!</string>
+    <string name="note5">Daily</string>
+    <string name="content5">Have fun all day</string>
+    <string name="note6">Self-development</string>
+    <string name="content6">Build yourself every day!</string>
 
 </resources>
