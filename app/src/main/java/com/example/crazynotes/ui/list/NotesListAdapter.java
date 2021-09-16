@@ -80,6 +80,13 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Note
         data.add(note);
     }
 
+    // метод обновления существующей заметки в текущем листе
+    public int updateNote(Note note) {
+        int index = data.indexOf(note);
+        data.set(index, note);
+        return index;
+    }
+
     // метод удаления заметки из текущего листа
     public int removeNote(Note note) {
         int index = data.indexOf(note);

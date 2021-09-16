@@ -146,7 +146,8 @@ public class NotesListFragment extends Fragment implements NotesListView {
             @Override
             public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
                 Note note = result.getParcelable(NoteEditFragment.KEY_NOTE_EDIT);
-
+                int index = adapter.updateNote(note);
+                adapter.notifyItemChanged(index);
             }
         });
 
