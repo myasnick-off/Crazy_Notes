@@ -8,6 +8,10 @@ public interface NotesListView {
 
     void showNotes(List<Note> notesList);
 
+    void onNoteAdded(Note note);
+
+    void onNoteRemoved(Note selectedNote);
+
     void showProgress();
 
     void hideProgress();

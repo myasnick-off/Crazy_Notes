@@ -1,11 +1,5 @@
 <resources>
     <string name="app_name">Crazy Notes</string>
-    <string name="note1">Some note</string>
-    <string name="content1">some content</string>
-    <string name="note2">To do</string>
-    <string name="content2">to do something</string>
-    <string name="note3">To buy</string>
-    <string name="content3">to buy something</string>
     <string name="default_date">21.12.21</string>
     <string name="search_action">Search</string>
     <string name="rename">rename</string>
@@ -18,11 +12,11 @@
     <string name="close_drawer">close</string>
     <string name="open_drawer">open</string>
     <string name="avatar_img">avatar</string>
-    <string name="note4">Don\'t forget</string>
-    <string name="content4">Do not forget to smile!</string>
-    <string name="note5">Daily</string>
-    <string name="content5">Have fun all day</string>
-    <string name="note6">Self-development</string>
-    <string name="content6">Build yourself every day!</string>
+    <string name="add_action">add</string>
+    <string name="update">update</string>
+    <string name="note_example">Some note</string>
+    <string name="content_example">Some content</string>
+    <string name="Note_title">Note Title</string>
+    <string name="save">save</string>
 
 </resources>

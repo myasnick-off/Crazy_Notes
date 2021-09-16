@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -18,20 +19,31 @@ import java.util.List;
 
 public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.NotesViewHolder> {
 
+    // Интерфейс для обработки событий нажатия на элементы списка
+    interface OnNoteClickedListener {
+
+        void onNoteClicked(Note note);
+
+        void onNoteLongClicked(Note note);
+    }
+
     private final List<Note> data = new ArrayList<>();
     private OnNoteClickedListener listener;
 
+    private Fragment fragment;
+
+    public NotesListAdapter(Fragment fragment) {
+        this.fragment = fragment;
+    }
+
+    // геттер для listener
     public OnNoteClickedListener getListener() {
         return listener;
     }
 
+    // сеттер для listener
     public void setListener(OnNoteClickedListener listener) {
         this.listener = listener;
-    }
-
-    public void setData(List<Note> noteList) {
-        data.clear();
-        this.data.addAll(noteList);
     }
 
     @NonNull
@@ -57,8 +69,22 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Note
         return data.size();
     }
 
-    interface OnNoteClickedListener {
-        void onNoteClicked(Note note);
+    // метод загрузки данных из репозитория во внутренний лист
+    public void setData(List<Note> noteList) {
+        data.clear();
+        this.data.addAll(noteList);
+    }
+
+    // метод добавления новой заметки в текущий лист
+    public void addNoteToList(Note note) {
+        data.add(note);
+    }
+
+    // метод удаления заметки из текущего листа
+    public int removeNote(Note note) {
+        int index = data.indexOf(note);
+        data.remove(index);
+        return  index;
     }
 
     class NotesViewHolder extends RecyclerView.ViewHolder {
@@ -69,12 +95,29 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Note
         public NotesViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            // регистрируем элемент списка для контекстного меню
+            fragment.registerForContextMenu(itemView);
+
+            // отрабатываем короткое нажатие не элемент списка
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (getListener() != null) {
                         getListener().onNoteClicked(data.get(getAdapterPosition()));
                     }
+                }
+            });
+
+            // отрабатываем длинное нажатие не элемент списка
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    itemView.showContextMenu();         // показываем контекстное меню
+                    //
+                    if (getListener() != null) {
+                        getListener().onNoteLongClicked(data.get(getAdapterPosition()));
+                    }
+                    return true;
                 }
             });
 
