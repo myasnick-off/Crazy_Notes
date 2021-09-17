@@ -6,17 +6,18 @@ import android.os.Parcelable;
 import androidx.annotation.StringRes;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class Note implements Parcelable {
 
     @StringRes
     private int id;
-    private int name;
-    private int content;
+    private String name;
+    private String content;
     private String imgUrl;
     private Date date;
 
-    public Note(int id, int name, int content, String imgUrl) {
+    public Note(int id, String name, String content, String imgUrl) {
         this.id = id;
         this.name = name;
         this.content = content;
@@ -26,8 +27,8 @@ public class Note implements Parcelable {
 
     protected Note(Parcel in) {
         id = in.readInt();
-        name = in.readInt();
-        content = in.readInt();
+        name = in.readString();
+        content = in.readString();
         imgUrl = in.readString();
         date = new Date(in.readLong());
     }
@@ -44,11 +45,11 @@ public class Note implements Parcelable {
         }
     };
 
-    public int getName() {
+    public String getName() {
         return name;
     }
 
-    public int getContent() {
+    public String getContent() {
         return content;
     }
 
@@ -64,6 +65,14 @@ public class Note implements Parcelable {
         return imgUrl;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -72,9 +81,26 @@ public class Note implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
-        dest.writeInt(name);
-        dest.writeInt(content);
+        dest.writeString(name);
+        dest.writeString(content);
         dest.writeString(imgUrl);
         dest.writeLong(date.getTime());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Note note = (Note) o;
+        return id == note.id &&
+                Objects.equals(name, note.name) &&
+                Objects.equals(content, note.content) &&
+                Objects.equals(imgUrl, note.imgUrl) &&
+                Objects.equals(date, note.date);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, content, imgUrl, date);
     }
 }

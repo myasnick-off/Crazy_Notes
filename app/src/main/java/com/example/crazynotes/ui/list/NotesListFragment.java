@@ -2,24 +2,30 @@ package com.example.crazynotes.ui.list;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentResultListener;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.crazynotes.R;
 import com.example.crazynotes.domain.DeviceNotesRepository;
 import com.example.crazynotes.domain.Note;
+import com.example.crazynotes.ui.Router;
+import com.example.crazynotes.ui.RouterHolder;
+import com.example.crazynotes.ui.details.NoteEditFragment;
 
 import java.util.List;
 
@@ -33,10 +39,12 @@ public class NotesListFragment extends Fragment implements NotesListView {
     public static final String KEY_NOTE = "NOTE";
 
     private NotesListPresenter presenter;
-    private RecyclerView container;
+    private RecyclerView recyclerView;
     private ProgressBar progressBar;
-    private NotesListAdapter adapter = new NotesListAdapter();
+    private NotesListAdapter adapter;
     private OnNoteClicked onNoteClickedContext;
+    private Note selectedNote;
+    private Router router;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -55,7 +63,72 @@ public class NotesListFragment extends Fragment implements NotesListView {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // передаем в презентор данный фрагмент и новый экземпляр репозитория
         presenter = new NotesListPresenter(this, new DeviceNotesRepository());
+        // передаем в адаптер данный фрагмент
+        adapter = new NotesListAdapter(this);
+
+        if (getParentFragment() instanceof RouterHolder) {
+            router = ((RouterHolder) getParentFragment()).getRouter();
+        }
+
+        // разрешаем фрагменту свое меню в ToolBar
+        setHasOptionsMenu(true);
+    }
+
+    // создание основного меню
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_main, menu);
+
+        // реализация работы виджета SearchView
+        MenuItem searchItem = menu.findItem(R.id.search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Toast.makeText(requireContext(), "Text submitted", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+    }
+
+    // создание контекстного меню
+    @Override
+    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        requireActivity().getMenuInflater().inflate(R.menu.menu_notes_context, menu);
+    }
+
+    // обработка выбора пунктов основного меню
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_add) {
+            presenter.addNewNote("Some title", "https://i.ytimg.com/vi/j1HomFU9GAA/maxresdefault.jpg");
+            return true;
+        }
+        // сюда добавить обработку пунктов основного меню, если будут еще
+        return super.onOptionsItemSelected(item);
+    }
+
+    // обработка выбора пунктов из контекстного меню
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.context_delete) {      // выбрано удаление
+            presenter.removeNote(selectedNote);
+        }
+        if (item.getItemId() == R.id.context_update) {      // выбрано редактирование
+            if (router != null) {
+                router.showNoteEdit(selectedNote);
+            }
+        }
+        if (item.getItemId() == R.id.context_copy) {}       // выбрано копирование
+        // сюда добавить обработку пунктов контестного меню, если будут еще
+        return super.onContextItemSelected(item);
     }
 
     @Nullable
@@ -69,23 +142,36 @@ public class NotesListFragment extends Fragment implements NotesListView {
         super.onViewCreated(view, savedInstanceState);
         progressBar = view.findViewById(R.id.progress_circular);
 
-        adapter.setListener(new NotesListAdapter.OnNoteClickedListener() {
+        getParentFragmentManager().setFragmentResultListener(NoteEditFragment.KEY_NOTE_RES, getViewLifecycleOwner(), new FragmentResultListener() {
             @Override
-            public void onNoteClicked(Note note) {
-                if (onNoteClickedContext != null) {
-                    onNoteClickedContext.noteOnClicked(note);
-                }
-                Bundle bundle = new Bundle();
-                bundle.putParcelable(KEY_NOTE, note);
-                getParentFragmentManager().setFragmentResult(KEY_SELECTED_NOTE, bundle);
+            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
+                Note note = result.getParcelable(NoteEditFragment.KEY_NOTE_EDIT);
+                int index = adapter.updateNote(note);
+                adapter.notifyItemChanged(index);
             }
         });
 
-        container = view.findViewById(R.id.root);
-        container.setLayoutManager(new LinearLayoutManager(requireContext(),
+
+
+        adapter.setListener(new NotesListAdapter.OnNoteClickedListener() {
+            @Override
+            public void onNoteClicked(Note note) {
+                if (router != null) {
+                    router.showNoteContent(note);
+                }
+            }
+
+            @Override
+            public void onNoteLongClicked(Note note) {
+                selectedNote = note;
+            }
+        });
+
+        recyclerView = view.findViewById(R.id.notes_list_recycler);
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(),
                 LinearLayoutManager.VERTICAL,
                 false));
-        container.setAdapter(adapter);
+        recyclerView.setAdapter(adapter);
         presenter.notesRequest();
 
     }
@@ -94,6 +180,19 @@ public class NotesListFragment extends Fragment implements NotesListView {
     public void showNotes(List<Note> notesList) {
         adapter.setData(notesList);
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onNoteAdded(Note note) {
+        adapter.addNoteToList(note);
+        adapter.notifyItemInserted(adapter.getItemCount() - 1);
+        recyclerView.smoothScrollToPosition(adapter.getItemCount());
+    }
+
+    @Override
+    public void onNoteRemoved(Note note) {
+        int index = adapter.removeNote(note);
+        adapter.notifyItemRemoved(index);
     }
 
     @Override

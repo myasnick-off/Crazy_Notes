@@ -8,5 +8,9 @@
         android:title="@string/search_action"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_add"
+        android:title="@string/add_action"
+        app:showAsAction="never" />
 
 </menu>

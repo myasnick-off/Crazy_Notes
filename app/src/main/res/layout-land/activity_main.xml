@@ -10,54 +10,30 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.list.MainActivity">
+        tools:context=".ui.MainActivity">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/main_app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/main_tool_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                app:title="@string/app_name" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/container_main"
+            android:name="com.example.crazynotes.ui.MainFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fitsSystemWindows="true">
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:background="@color/purple_200"
+            tools:context=".ui.MainActivity" />
 
-            <com.google.android.material.appbar.AppBarLayout
-                android:id="@+id/main_app_bar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/main_tool_bar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    app:menu="@menu/menu_main"
-                    app:title="@string/app_name" />
-
-            </com.google.android.material.appbar.AppBarLayout>
-
-            <androidx.fragment.app.FragmentContainerView
-                android:id="@+id/container"
-                android:name="com.example.crazynotes.ui.list.NotesListFragment"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:background="@color/purple_200"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/note_container"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/main_app_bar" />
-
-            <androidx.fragment.app.FragmentContainerView
-                android:id="@+id/note_container"
-                android:name="com.example.crazynotes.ui.details.NoteContentFragment"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:background="@color/white"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/container"
-                app:layout_constraintTop_toBottomOf="@id/main_app_bar" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <com.google.android.material.navigation.NavigationView

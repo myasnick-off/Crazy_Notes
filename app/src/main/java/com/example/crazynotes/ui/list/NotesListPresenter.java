@@ -21,8 +21,31 @@ public class NotesListPresenter {
         repository.getNotes(new Callback<List<Note>>() {
             @Override
             public void onSuccess(List<Note> result) {
-                listView.showNotes(result);
                 listView.hideProgress();
+                listView.showNotes(result);
+
+            }
+        });
+    }
+
+    public void addNewNote(String title, String imgUrl) {
+        listView.showProgress();
+        repository.addNote(title, imgUrl, new Callback<Note>() {
+            @Override
+            public void onSuccess(Note result) {
+                listView.hideProgress();
+                listView.onNoteAdded(result);
+            }
+        });
+    }
+
+    public void removeNote(Note note) {
+        listView.showProgress();
+        repository.deleteNote(note, new Callback<Note>() {
+            @Override
+            public void onSuccess(Note result) {
+                listView.hideProgress();
+                listView.onNoteRemoved(note);
             }
         });
     }
