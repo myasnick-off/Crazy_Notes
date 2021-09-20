@@ -10,7 +10,8 @@
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_add"
+        android:icon="@drawable/ic_baseline_add_circle_outline_24"
         android:title="@string/add_action"
-        app:showAsAction="never" />
+        app:showAsAction="ifRoom" />
 
 </menu>

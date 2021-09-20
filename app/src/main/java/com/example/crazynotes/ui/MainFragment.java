@@ -8,11 +8,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.crazynotes.R;
-import com.example.crazynotes.ui.list.NotesListFragment;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
 
 public class MainFragment extends Fragment implements RouterHolder, BackPressedMonitor {
 
-    Router router;
+    private Router router;
 
     public MainFragment() {
         super(R.layout.fragment_main);
@@ -34,7 +34,11 @@ public class MainFragment extends Fragment implements RouterHolder, BackPressedM
         super.onViewCreated(view, savedInstanceState);
 
         if (savedInstanceState == null) {
-            router.showNotesList();
+            if (isAuthorized()) {
+                router.showNotesList();
+            } else {
+                router.showAuth();
+            }
         }
     }
 
@@ -45,5 +49,9 @@ public class MainFragment extends Fragment implements RouterHolder, BackPressedM
             return true;
         }
         return false;
+    }
+
+    private boolean isAuthorized() {
+        return GoogleSignIn.getLastSignedInAccount(requireContext()) != null;
     }
 }
