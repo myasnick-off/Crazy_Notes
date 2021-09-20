@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.example.crazynotes.R;
 import com.example.crazynotes.domain.Note;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,8 +30,9 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Note
 
     private final List<Note> data = new ArrayList<>();
     private OnNoteClickedListener listener;
+    SimpleDateFormat dateFormatter = new SimpleDateFormat("dd.MM.yyyy");
 
-    private Fragment fragment;
+    private final Fragment fragment;
 
     public NotesListAdapter(Fragment fragment) {
         this.fragment = fragment;
@@ -57,11 +59,9 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Note
     public void onBindViewHolder(@NonNull NotesListAdapter.NotesViewHolder holder, int position) {
         Note note = data.get(position);
 
-
         holder.getNoteName().setText(note.getName());
-        holder.getNoteDate().setText(note.getDate().toString());
+        holder.getNoteDate().setText(dateFormatter.format(note.getDate()));
         Glide.with(holder.getNoteImage()).load(note.getImgUrl()).into(holder.getNoteImage());
-
     }
 
     @Override
@@ -69,35 +69,49 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Note
         return data.size();
     }
 
-    // метод загрузки данных из репозитория во внутренний лист
+    // метод загрузки данных из репозитория во внутренний список
     public void setData(List<Note> noteList) {
         data.clear();
         this.data.addAll(noteList);
     }
 
-    // метод добавления новой заметки в текущий лист
+    // метод добавления новой заметки в текущий список
     public void addNoteToList(Note note) {
-        data.add(note);
+//        data.add(note);
     }
 
-    // метод обновления существующей заметки в текущем листе
+    // метод редактирования выбранной заметки в текущем списке
     public int updateNote(Note note) {
         int index = data.indexOf(note);
-        data.set(index, note);
+            data.set(index, note);          // заменяем ее на новую
+            notifyItemChanged(index);
         return index;
     }
 
-    // метод удаления заметки из текущего листа
+    // метод копирования выбранной заметки в текущем списке
+    public int copySelectedNote(Note note) {
+        int index = data.indexOf(note);
+        index++;
+        try {
+            Note copy = note.clone();
+            data.add(index, copy);
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return index;
+    }
+
+    // метод удаления заметки из текущего списка
     public int removeNote(Note note) {
         int index = data.indexOf(note);
         data.remove(index);
-        return  index;
+        return index;
     }
 
     class NotesViewHolder extends RecyclerView.ViewHolder {
-        private TextView noteName;
-        private TextView noteDate;
-        private ImageView noteImage;
+        private final TextView noteName;
+        private final TextView noteDate;
+        private final ImageView noteImage;
 
         public NotesViewHolder(@NonNull View itemView) {
             super(itemView);

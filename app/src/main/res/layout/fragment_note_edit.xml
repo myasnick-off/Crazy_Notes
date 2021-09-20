@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/edit_note_context"
     android:layout_width="match_parent"
@@ -11,19 +12,19 @@
         android:id="@+id/edit_note_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/default_margin"
-        android:textSize="@dimen/title_text_size"
-        android:textStyle="bold"
+        android:layout_marginBottom="@dimen/margin_16"
+        android:autofillHints="@string/Note_title"
         android:hint="@string/Note_title"
-        android:autofillHints="@string/Note_title" />
+        android:textSize="@dimen/title_text_size"
+        android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/note_date"
+        android:id="@+id/edit_note_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/default_margin"
+        android:layout_marginBottom="@dimen/margin_16"
         android:textSize="@dimen/default_text_size"
-        tools:text="@string/default_date" />
+        android:hint="@string/select_date" />
 
     <EditText
         android:id="@+id/edit_note_content"
@@ -32,14 +33,17 @@
         android:layout_marginBottom="@dimen/margin_16"
         android:ems="10"
         android:gravity="start|top"
+        android:hint="@string/content_example"
         android:inputType="textMultiLine"
-        android:textStyle="italic"
-        android:hint="@string/content_example" />
+        android:textStyle="italic" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_16"
         android:layout_gravity="center"
-        android:text="@string/save" />
+        android:backgroundTint="@color/black"
+        android:text="@string/save"
+        app:icon="@drawable/ic_baseline_check_circle_24" />
 </LinearLayout>

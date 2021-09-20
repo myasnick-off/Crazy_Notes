@@ -12,7 +12,11 @@ public interface NotesListView {
 
     void onNoteRemoved(Note selectedNote);
 
+    void onNoteCopied(Note result);
+
     void showProgress();
 
     void hideProgress();
+
+    void onNoteUpdated(Note result);
 }

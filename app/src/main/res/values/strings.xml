@@ -18,5 +18,6 @@
     <string name="content_example">Some content</string>
     <string name="Note_title">Note Title</string>
     <string name="save">save</string>
+    <string name="select_date">Select date</string>
 
 </resources>

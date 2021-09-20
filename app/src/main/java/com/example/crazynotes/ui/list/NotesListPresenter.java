@@ -28,13 +28,13 @@ public class NotesListPresenter {
         });
     }
 
-    public void addNewNote(String title, String imgUrl) {
+    public void addNewNote(Note note) {
         listView.showProgress();
-        repository.addNote(title, imgUrl, new Callback<Note>() {
+        repository.addNote(note, new Callback<Note>() {
             @Override
             public void onSuccess(Note result) {
                 listView.hideProgress();
-                listView.onNoteAdded(result);
+                listView.onNoteAdded(note);
             }
         });
     }
@@ -46,6 +46,28 @@ public class NotesListPresenter {
             public void onSuccess(Note result) {
                 listView.hideProgress();
                 listView.onNoteRemoved(note);
+            }
+        });
+    }
+
+    public void copyNote(Note note) {
+        listView.showProgress();
+        repository.copyNote(note, new Callback<Note>() {
+            @Override
+            public void onSuccess(Note result) {
+                listView.hideProgress();
+                listView.onNoteCopied(result);
+            }
+        });
+    }
+
+    public void updateNote(Note note) {
+        listView.showProgress();
+        repository.updateNote(note, new Callback<Note>() {
+            @Override
+            public void onSuccess(Note result) {
+                listView.hideProgress();
+                listView.onNoteUpdated(result);
             }
         });
     }

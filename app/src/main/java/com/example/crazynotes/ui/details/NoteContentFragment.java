@@ -15,6 +15,8 @@ import com.example.crazynotes.R;
 import com.example.crazynotes.domain.Note;
 import com.example.crazynotes.ui.list.NotesListFragment;
 
+import java.text.SimpleDateFormat;
+
 public class NoteContentFragment extends Fragment {
 
     private static final String KEY_NOTE = "KEY_NOTE";
@@ -22,6 +24,7 @@ public class NoteContentFragment extends Fragment {
     private TextView noteName;
     private TextView noteDate;
     private TextView noteContent;
+    SimpleDateFormat dateFormatter = new SimpleDateFormat("dd.MM.yyyy");
 
     public static Fragment newInstance(Note note) {
         NoteContentFragment fragment = new NoteContentFragment();
@@ -64,7 +67,7 @@ public class NoteContentFragment extends Fragment {
 
     private void displayNote(Note note) {
         noteName.setText(note.getName());
-        noteDate.setText(note.getDate().toString());
+        noteDate.setText(dateFormatter.format(note.getDate()));
         noteContent.setText(note.getContent());
     }
 }

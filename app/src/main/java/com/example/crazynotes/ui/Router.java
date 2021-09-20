@@ -13,10 +13,17 @@ import com.example.crazynotes.ui.menu.SettingsFragment;
 
 public class Router {
 
-    FragmentManager fragmentManager;
+    private final FragmentManager fragmentManager;
 
     public Router(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
+    }
+
+    public void showAuth() {
+        fragmentManager
+                .beginTransaction()
+                .replace(R.id.container, new AuthFragment())
+                .commit();
     }
 
     public void showNotesList() {
