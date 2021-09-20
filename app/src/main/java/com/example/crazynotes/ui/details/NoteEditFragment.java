@@ -79,8 +79,11 @@ public class NoteEditFragment extends Fragment {
         if (!requireArguments().isEmpty()) {
             note = requireArguments().getParcelable(KEY_NOTE_EDIT);
             displayNote(note);
+            initDate(note);
         } else {
+            // если создается новая заметка:
             note = new Note();
+            initDate(note);
             isNewNote = true;
         }
 
@@ -125,19 +128,18 @@ public class NoteEditFragment extends Fragment {
         });
     }
 
-    @SuppressLint("SetTextI18n")
     private void displayNote(Note note) {
         noteNameEdit.setText(note.getName());
         noteContentEdit.setText(note.getContent());
-        initDate(note);
-        noteDateEdit.setText(currentDay + "." + (currentMonth + 1) + "." + currentYear);
     }
 
-    // метод инициализации полей даты
+    // метод инициализации полей даты и вывода даты в текстовом поле
+    @SuppressLint("SetTextI18n")
     private void initDate(Note note) {
         calendar.setTime(note.getDate());
         currentDay = calendar.get(Calendar.DAY_OF_MONTH);
         currentMonth = calendar.get(Calendar.MONTH);
         currentYear = calendar.get(Calendar.YEAR);
+        noteDateEdit.setText(currentDay + "." + (currentMonth + 1) + "." + currentYear);
     }
 }

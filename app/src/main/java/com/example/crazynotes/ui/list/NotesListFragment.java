@@ -42,23 +42,8 @@ public class NotesListFragment extends Fragment implements NotesListView {
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
     private NotesListAdapter adapter;
-    private OnNoteClicked onNoteClickedContext;
     private Note selectedNote;
     private Router router;
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        if (context instanceof OnNoteClicked) {
-            onNoteClickedContext = (OnNoteClicked) context;
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        onNoteClickedContext = null;
-        super.onDetach();
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -109,7 +94,6 @@ public class NotesListFragment extends Fragment implements NotesListView {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_add) {
-//            presenter.addNewNote("Some title", "https://i.ytimg.com/vi/j1HomFU9GAA/maxresdefault.jpg");
             if (router != null) {
                 router.showNoteEdit(null);
             }
@@ -133,7 +117,7 @@ public class NotesListFragment extends Fragment implements NotesListView {
             return true;
         }
         if (item.getItemId() == R.id.context_copy) {        // выбрано копирование
-            presenter.copyNote(selectedNote);
+            presenter.addNewNote(selectedNote);
             return true;
         }
         return super.onContextItemSelected(item);
@@ -188,34 +172,7 @@ public class NotesListFragment extends Fragment implements NotesListView {
 
     @Override
     public void showNotes(List<Note> notesList) {
-        adapter.setData(notesList);
-        adapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onNoteAdded(Note note) {
-        adapter.addNoteToList(note);
-        adapter.notifyItemInserted(adapter.getItemCount());
-        recyclerView.smoothScrollToPosition(adapter.getItemCount());
-    }
-
-    @Override
-    public void onNoteCopied(Note note) {
-        int index = adapter.copySelectedNote(note);
-        adapter.notifyItemInserted(index);
-        recyclerView.smoothScrollToPosition(index);
-    }
-
-    @Override
-    public void onNoteUpdated(Note result) {
-        int index = adapter.updateNote(result);
-        adapter.notifyItemChanged(index);
-    }
-
-    @Override
-    public void onNoteRemoved(Note note) {
-        int index = adapter.removeNote(note);
-        adapter.notifyItemRemoved(index);
+        adapter.submitList(notesList);
     }
 
     @Override

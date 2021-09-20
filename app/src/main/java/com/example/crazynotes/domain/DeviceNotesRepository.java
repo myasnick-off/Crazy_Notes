@@ -56,30 +56,6 @@ public class DeviceNotesRepository implements NotesRepository {
     }
 
     @Override
-    public void copyNote(Note note, Callback<Note> callback) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-               int index = noteList.indexOf(note);
-
-                try {
-                    Note newNote = note.clone();
-                    noteList.add(index+1, newNote);
-                } catch (CloneNotSupportedException e) {
-                    e.printStackTrace();
-                }
-
-               handler.post(new Runnable() {
-                   @Override
-                   public void run() {
-                       callback.onSuccess(note);
-                   }
-               });
-            }
-        }).start();
-    }
-
-    @Override
     public void updateNote(Note note, Callback<Note> callback) {
         new Thread(new Runnable() {
             @Override

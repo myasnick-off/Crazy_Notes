@@ -93,11 +93,6 @@ public class FireStoreNotesRepository implements NotesRepository {
     }
 
     @Override
-    public void copyNote(Note note, Callback<Note> callback) {
-        addNote(note, callback);
-    }
-
-    @Override
     public void updateNote(Note note, Callback<Note> callback) {
         Map<String, Object> data = new HashMap<>();
         data.put(NOTE_NAME, note.getName());

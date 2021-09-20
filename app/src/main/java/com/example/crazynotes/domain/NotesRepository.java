@@ -10,7 +10,5 @@ public interface NotesRepository {
 
     void deleteNote(Note note, Callback<Note> callback);
 
-    void copyNote(Note note, Callback<Note> callback);
-
     void updateNote(Note note, Callback<Note> noteCallback);
 }
