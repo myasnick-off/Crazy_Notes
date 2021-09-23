@@ -1,55 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <GridLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/image_dialog_recycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:columnCount="2"
-        android:useDefaultMargins="true">
+        android:useDefaultMargins="true" />
 
-        <ImageView
-            android:id="@+id/img_1"
-            android:layout_height="@dimen/height_90"
-            android:layout_columnWeight="1"
-            android:scaleType="centerCrop"
-            android:src="@android:drawable/ic_menu_gallery" />
-
-        <ImageView
-            android:id="@+id/img_2"
-            android:layout_height="@dimen/height_90"
-            android:layout_columnWeight="1"
-            android:scaleType="centerCrop"
-            android:src="@android:drawable/ic_menu_gallery" />
-
-        <ImageView
-            android:id="@+id/img_3"
-            android:layout_height="@dimen/height_90"
-            android:layout_columnWeight="1"
-            android:scaleType="centerCrop"
-            android:src="@android:drawable/ic_menu_gallery" />
-
-        <ImageView
-            android:id="@+id/img_4"
-            android:layout_height="@dimen/height_90"
-            android:layout_columnWeight="1"
-            android:scaleType="centerCrop"
-            android:src="@android:drawable/ic_menu_gallery" />
-
-        <ImageView
-            android:id="@+id/img_5"
-            android:layout_height="@dimen/height_90"
-            android:layout_columnWeight="1"
-            android:scaleType="centerCrop"
-            android:src="@android:drawable/ic_menu_gallery" />
-
-        <ImageView
-            android:id="@+id/img_6"
-            android:layout_height="@dimen/height_90"
-            android:layout_columnWeight="1"
-            android:scaleType="centerCrop"
-            android:src="@android:drawable/ic_menu_gallery" />
-
-    </GridLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

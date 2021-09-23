@@ -1,7 +1,5 @@
 package com.example.crazynotes.ui.list;
 
-import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -15,7 +13,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentResultListener;
@@ -34,13 +31,7 @@ import java.util.List;
 
 public class NotesListFragment extends Fragment implements NotesListView {
 
-    public interface OnNoteClicked {
-        void noteOnClicked(Note note);
-    }
-
     public static final String KEY_SELECTED_NOTE = "SELECTED_NOTE";
-    public static final String KEY_NOTE = "NOTE";
-    public static final String ARG_NOTE = "ARG_NOTE";
 
     private NotesListPresenter presenter;
     private RecyclerView recyclerView;
