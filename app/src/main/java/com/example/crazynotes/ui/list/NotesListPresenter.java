@@ -27,7 +27,7 @@ public class NotesListPresenter {
                 listView.hideProgress();
                 noteList.clear();
                 noteList.addAll(result);
-                listView.showNotes(result);
+                listView.showNotes(new ArrayList<>(result));
             }
         });
     }
@@ -40,6 +40,7 @@ public class NotesListPresenter {
                 listView.hideProgress();
                 noteList.add(result);
                 listView.showNotes(new ArrayList<>(noteList));
+                listView.scrollToPosition(noteList.size());
             }
         });
     }
@@ -65,6 +66,7 @@ public class NotesListPresenter {
                 int index = noteList.indexOf(note);
                 noteList.set(index, result);
                 listView.showNotes(new ArrayList<>(noteList));
+                listView.scrollToPosition(index);
             }
         });
     }

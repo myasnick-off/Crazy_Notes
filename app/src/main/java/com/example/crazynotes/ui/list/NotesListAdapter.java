@@ -24,12 +24,12 @@ public class NotesListAdapter extends ListAdapter<Note, NotesListAdapter.NotesVi
     public static final DiffUtil.ItemCallback<Note> DIFF_CALLBACK = new DiffUtil.ItemCallback<Note>() {
         @Override
         public boolean areItemsTheSame(@NonNull Note oldItem, @NonNull Note newItem) {
-            return newItem.getId().equals(oldItem.getId());
+            return oldItem.getId().equals(newItem.getId());
         }
 
         @Override
         public boolean areContentsTheSame(@NonNull Note oldItem, @NonNull Note newItem) {
-            return newItem.equals(oldItem);
+            return oldItem.equals(newItem);
         }
     };
 

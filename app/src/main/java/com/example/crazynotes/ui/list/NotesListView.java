@@ -8,6 +8,8 @@ public interface NotesListView {
 
     void showNotes(List<Note> notesList);
 
+    void scrollToPosition(int position);
+
     void showProgress();
 
     void hideProgress();

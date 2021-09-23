@@ -10,14 +10,6 @@ import java.util.Objects;
 
 public class Note implements Parcelable {
 
-    private static final String[] IMG_URLS = {
-            "https://i.ytimg.com/vi/j1HomFU9GAA/maxresdefault.jpg",
-            "https://pbs.twimg.com/media/Eg6kMbfWAAY3cpW.jpg",
-            "https://ufaved.info/upload/iblock/4f8/4f89d3dff002302d68645b8f2a303700.jpg",
-            "https://pbs.twimg.com/media/EjmcgpeVkAAE2TZ.jpg",
-            "https://secure.meetupstatic.com/photos/event/7/b/9/e/600_482911646.jpeg",
-            "https://pbs.twimg.com/media/EvF3lTIWQAYpOOb.jpg"};
-
     private String id;
     private String name;
     private String content;
@@ -27,8 +19,6 @@ public class Note implements Parcelable {
     public Note() {
         this.name = "Empty note";
         this.content = "";
-        int index = (int) Math.round(Math.random() * (IMG_URLS.length-1));
-        this.imgUrl = IMG_URLS[index];
         this.date = new Date();
     }
 

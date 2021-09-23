@@ -2,21 +2,28 @@ package com.example.crazynotes.ui.details;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentResultListener;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.crazynotes.R;
+import com.example.crazynotes.domain.FireStoreNotesRepository;
 import com.example.crazynotes.domain.Note;
+import com.example.crazynotes.ui.dialog.ImageDialogFragment;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.util.Calendar;
 
@@ -29,8 +36,10 @@ public class NoteEditFragment extends Fragment {
     private EditText noteNameEdit;
     private EditText noteContentEdit;
     private TextView noteDateEdit;
+    private ImageView noteImage;
 
     private Note note;
+    private String imgUrl;
     private Calendar calendar;
     private int currentDay;
     private int currentMonth;
@@ -38,13 +47,8 @@ public class NoteEditFragment extends Fragment {
     private boolean isNewNote;
 
     public NoteEditFragment() {
-        // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     */
     public static NoteEditFragment newInstance(Note note) {
         NoteEditFragment fragment = new NoteEditFragment();
         Bundle args = new Bundle();
@@ -53,11 +57,6 @@ public class NoteEditFragment extends Fragment {
         }
         fragment.setArguments(args);
         return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -73,11 +72,13 @@ public class NoteEditFragment extends Fragment {
         noteNameEdit = view.findViewById(R.id.edit_note_name);
         noteContentEdit = view.findViewById(R.id.edit_note_content);
         noteDateEdit = view.findViewById(R.id.edit_note_date);
+        noteImage = view.findViewById(R.id.img_note);
         calendar = Calendar.getInstance();
 
         // Если открыта существующая заметка для редактирования, загружаем ее данные из Bundle
         if (!requireArguments().isEmpty()) {
             note = requireArguments().getParcelable(KEY_NOTE_EDIT);
+            imgUrl = note.getImgUrl();
             displayNote(note);
             initDate(note);
         } else {
@@ -106,6 +107,24 @@ public class NoteEditFragment extends Fragment {
             }
         });
 
+        // обработка нажатия кнопки выбора картинки
+        noteImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new ImageDialogFragment().show(getChildFragmentManager(), "ImageDialogFragment");
+            }
+        });
+
+        // получаем результат от диалогового окна выбора картинки
+        getChildFragmentManager().setFragmentResultListener(ImageDialogFragment.KEY_IMG, getViewLifecycleOwner(), new FragmentResultListener() {
+            @Override
+            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
+                imgUrl = result.getString(ImageDialogFragment.ARG_IMG);
+                Glide.with(noteImage).load(imgUrl).into(noteImage);
+                noteImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            }
+        });
+
         // обработка нажатия кнопки "Сохранить"
         view.findViewById(R.id.btn_save).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,6 +133,7 @@ public class NoteEditFragment extends Fragment {
                 note.setName(noteNameEdit.getText().toString());
                 note.setDate(calendar.getTime());
                 note.setContent(noteContentEdit.getText().toString());
+                note.setImgUrl(imgUrl);
 
                 Bundle bundle = new Bundle();
                 bundle.putParcelable(KEY_NOTE_EDIT, note);
@@ -131,6 +151,8 @@ public class NoteEditFragment extends Fragment {
     private void displayNote(Note note) {
         noteNameEdit.setText(note.getName());
         noteContentEdit.setText(note.getContent());
+        Glide.with(noteImage).load(imgUrl).into(noteImage);
+        noteImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
     }
 
     // метод инициализации полей даты и вывода даты в текстовом поле

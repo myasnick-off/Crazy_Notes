@@ -34,11 +34,8 @@ public class Router {
     }
 
     public void showNoteContent(Note note) {
-        fragmentManager
-                .beginTransaction()
-                .replace(R.id.container, NoteContentFragment.newInstance(note))
-                .addToBackStack(null)
-                .commit();
+        NoteContentFragment.newInstance(note)
+                .show(fragmentManager, "NoteContentFragment");
     }
 
     public void showNoteEdit(Note note) {
