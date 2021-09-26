@@ -17,13 +17,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FireStoreNotesRepository implements NotesRepository {
+public class FireStoreNotesRepository implements NotesRepository, ImagesRepository {
 
-    public static final String COLLECTION_NAME = "notes";
+    public static final String NOTES_COLLECTION = "notes";
     public static final String NOTE_NAME = "name";
     public static final String NOTE_CONTENT = "content";
     public static final String NOTE_IMG_URL = "imgUrl";
     public static final String NOTE_DATE = "noteDate";
+
+    public static final String IMG_COLLECTION = "imgUrls";
+    public static final String IMG_URL = "url";
 
     public static final String[] IMG_URLS = {
             "https://i.ytimg.com/vi/j1HomFU9GAA/maxresdefault.jpg",
@@ -37,7 +40,7 @@ public class FireStoreNotesRepository implements NotesRepository {
 
     @Override
     public void getNotes(Callback<List<Note>> callback) {
-        db.collection(COLLECTION_NAME)
+        db.collection(NOTES_COLLECTION)
                 .orderBy(NOTE_DATE, Query.Direction.ASCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -71,7 +74,7 @@ public class FireStoreNotesRepository implements NotesRepository {
         data.put(NOTE_IMG_URL, note.getImgUrl());
         data.put(NOTE_DATE, note.getDate());
 
-        db.collection(COLLECTION_NAME)
+        db.collection(NOTES_COLLECTION)
                 .add(data)
                 .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                     @Override
@@ -89,7 +92,7 @@ public class FireStoreNotesRepository implements NotesRepository {
 
     @Override
     public void deleteNote(Note note, Callback<Note> callback) {
-        db.collection(COLLECTION_NAME)
+        db.collection(NOTES_COLLECTION)
                 .document(note.getId())
                 .delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -108,13 +111,33 @@ public class FireStoreNotesRepository implements NotesRepository {
         data.put(NOTE_IMG_URL, note.getImgUrl());
         data.put(NOTE_DATE, note.getDate());
 
-        db.collection(COLLECTION_NAME)
+        db.collection(NOTES_COLLECTION)
                 .document(note.getId())
                 .update(data)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         callback.onSuccess(note);
+                    }
+                });
+    }
+
+    @Override
+    public void getImageUrls(Callback<List<String>> callback) {
+        db.collection(IMG_COLLECTION)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            List<String> imgList = new ArrayList<>();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                StringBuilder builder = new StringBuilder();
+                                builder.append(document.getString(IMG_URL));
+                                imgList.add(builder.toString());
+                            }
+                            callback.onSuccess(imgList);
+                        }
                     }
                 });
     }

@@ -16,16 +16,20 @@ import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.crazynotes.R;
+import com.example.crazynotes.domain.Callback;
 import com.example.crazynotes.domain.FireStoreNotesRepository;
 import com.example.crazynotes.domain.Note;
 import com.example.crazynotes.ui.dialog.ImageDialogFragment;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class NoteEditFragment extends Fragment {
 
@@ -87,6 +91,7 @@ public class NoteEditFragment extends Fragment {
             initDate(note);
             isNewNote = true;
         }
+
 
         // обработка нажатия на текстовое поле даты
         noteDateEdit.setOnClickListener(new View.OnClickListener() {
