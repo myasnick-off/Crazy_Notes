@@ -1,6 +1,5 @@
 package com.example.crazynotes.ui.list;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -26,17 +25,13 @@ import com.example.crazynotes.domain.Note;
 import com.example.crazynotes.ui.Router;
 import com.example.crazynotes.ui.RouterHolder;
 import com.example.crazynotes.ui.details.NoteEditFragment;
+import com.example.crazynotes.ui.dialog.DeleteDialogFragment;
 
 import java.util.List;
 
 public class NotesListFragment extends Fragment implements NotesListView {
 
-    public interface OnNoteClicked {
-        void noteOnClicked(Note note);
-    }
-
     public static final String KEY_SELECTED_NOTE = "SELECTED_NOTE";
-    public static final String KEY_NOTE = "NOTE";
 
     private NotesListPresenter presenter;
     private RecyclerView recyclerView;
@@ -44,6 +39,8 @@ public class NotesListFragment extends Fragment implements NotesListView {
     private NotesListAdapter adapter;
     private Note selectedNote;
     private Router router;
+
+    private boolean isListRequested;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -107,7 +104,7 @@ public class NotesListFragment extends Fragment implements NotesListView {
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.context_delete) {      // выбрано удаление
-            presenter.removeNote(selectedNote);
+            showDeleteDialog();
             return true;
         }
         if (item.getItemId() == R.id.context_update) {      // выбрано редактирование
@@ -134,15 +131,34 @@ public class NotesListFragment extends Fragment implements NotesListView {
         super.onViewCreated(view, savedInstanceState);
         progressBar = view.findViewById(R.id.progress_circular);
 
+        if (savedInstanceState != null) {
+            selectedNote = savedInstanceState.getParcelable(KEY_SELECTED_NOTE);
+        }
+
+        // Получаем результат от фрагмента для редактирования заметки
         getParentFragmentManager().setFragmentResultListener(NoteEditFragment.KEY_NOTE_RES, getViewLifecycleOwner(), new FragmentResultListener() {
             @Override
             public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
                 Note note = result.getParcelable(NoteEditFragment.KEY_NOTE_EDIT);
                 boolean isNewNote = result.getBoolean(NoteEditFragment.KEY_IS_NEW);
                 if (isNewNote) {
+                    // если заметка новая, добавляем ее в список
                     presenter.addNewNote(note);
                 } else {
+                    // если заметка уже существует, обновляем ее
                     presenter.updateNote(note);
+                }
+            }
+        });
+
+        // Получаем результат от диалогового окна удаления
+        getChildFragmentManager().setFragmentResultListener(DeleteDialogFragment.KEY_DEL_DIALOG, getViewLifecycleOwner(), new FragmentResultListener() {
+            @Override
+            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
+                boolean isOkPressed = result.getBoolean(DeleteDialogFragment.ARG_OK);
+                if (isOkPressed) {
+                    // если была нажата кнопка "ОК", говорим презентору удалить эту заметку
+                    presenter.removeNote(selectedNote);
                 }
             }
         });
@@ -166,13 +182,21 @@ public class NotesListFragment extends Fragment implements NotesListView {
                 LinearLayoutManager.VERTICAL,
                 false));
         recyclerView.setAdapter(adapter);
-        presenter.notesRequest();
 
+        if (!isListRequested) {
+            presenter.notesRequest();
+            isListRequested = true;
+        }
     }
 
     @Override
     public void showNotes(List<Note> notesList) {
         adapter.submitList(notesList);
+    }
+
+    @Override
+    public void scrollToPosition(int position) {
+        recyclerView.smoothScrollToPosition(position);
     }
 
     @Override
@@ -185,4 +209,15 @@ public class NotesListFragment extends Fragment implements NotesListView {
         progressBar.setVisibility(View.GONE);
     }
 
+    // Метод вызова диалогового окна с подтверждением удаления выбранной заметки
+    private void showDeleteDialog() {
+        new DeleteDialogFragment().show(getChildFragmentManager(), "deleteDialogFragment");
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        // сохраняем выбранную заметку (нужно при повороте экрна с вызванным диалоговым окном удаления)
+        outState.putParcelable(KEY_SELECTED_NOTE, selectedNote);
+        super.onSaveInstanceState(outState);
+    }
 }

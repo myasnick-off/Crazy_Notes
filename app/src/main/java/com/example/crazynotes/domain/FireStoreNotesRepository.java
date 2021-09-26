@@ -25,6 +25,14 @@ public class FireStoreNotesRepository implements NotesRepository {
     public static final String NOTE_IMG_URL = "imgUrl";
     public static final String NOTE_DATE = "noteDate";
 
+    public static final String[] IMG_URLS = {
+            "https://i.ytimg.com/vi/j1HomFU9GAA/maxresdefault.jpg",
+            "https://pbs.twimg.com/media/Eg6kMbfWAAY3cpW.jpg",
+            "https://ufaved.info/upload/iblock/4f8/4f89d3dff002302d68645b8f2a303700.jpg",
+            "https://pbs.twimg.com/media/EjmcgpeVkAAE2TZ.jpg",
+            "https://secure.meetupstatic.com/photos/event/7/b/9/e/600_482911646.jpeg",
+            "https://pbs.twimg.com/media/EvF3lTIWQAYpOOb.jpg"};
+
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override

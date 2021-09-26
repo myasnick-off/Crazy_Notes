@@ -23,8 +23,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margin_16"
-        android:textSize="@dimen/default_text_size"
-        android:hint="@string/select_date" />
+        android:hint="@string/select_date"
+        android:textSize="@dimen/default_text_size" />
 
     <EditText
         android:id="@+id/edit_note_content"
@@ -37,12 +37,20 @@
         android:inputType="textMultiLine"
         android:textStyle="italic" />
 
+    <ImageView
+        android:id="@+id/img_note"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_90"
+        android:layout_marginBottom="@dimen/margin_16"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_baseline_wallpaper_24" />
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_16"
         android:layout_gravity="center"
+        android:layout_marginTop="@dimen/margin_16"
         android:backgroundTint="@color/black"
         android:text="@string/save"
         app:icon="@drawable/ic_baseline_check_circle_24" />
