@@ -27,6 +27,7 @@ import com.example.crazynotes.ui.RouterHolder;
 import com.example.crazynotes.ui.details.NoteEditFragment;
 import com.example.crazynotes.ui.dialog.DeleteDialogFragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class NotesListFragment extends Fragment implements NotesListView {
@@ -187,6 +188,7 @@ public class NotesListFragment extends Fragment implements NotesListView {
             presenter.notesRequest();
             isListRequested = true;
         }
+
     }
 
     @Override

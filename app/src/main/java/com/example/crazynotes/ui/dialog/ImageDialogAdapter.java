@@ -40,9 +40,9 @@ public class ImageDialogAdapter extends RecyclerView.Adapter<ImageDialogAdapter.
     }
 
     // метод передачи списка данных в адаптер
-    public void setImgUrlList(String... args) {
+    public void setImgUrlList(List<String> list) {
         imgUrlList.clear();
-        imgUrlList = Arrays.asList(args);
+        imgUrlList.addAll(list);
     }
 
     class ImageViewHolder extends RecyclerView.ViewHolder {
