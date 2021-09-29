@@ -10,8 +10,6 @@ public class ImageDialogPresenter {
 
     private final ImageDialogView dialogView;
     private final ImagesRepository repository;
-    private List<String> imageList;
-
 
     public ImageDialogPresenter(ImageDialogView dialogView, ImagesRepository repository) {
         this.dialogView = dialogView;
@@ -24,10 +22,8 @@ public class ImageDialogPresenter {
         repository.getImageUrls(new Callback<List<String>>() {
             @Override
             public void onSuccess(List<String> result) {
-                dialogView.hideProgress();
-                imageList = new ArrayList<>();
-                imageList.addAll(result);
                 dialogView.showImages(result);
+                dialogView.hideProgress();
             }
         });
     }

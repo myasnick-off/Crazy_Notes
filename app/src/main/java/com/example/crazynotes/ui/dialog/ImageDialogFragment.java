@@ -58,6 +58,7 @@ public class ImageDialogFragment extends BottomSheetDialogFragment implements Im
             public void onImageClicked(int imgPosition) {
                 String imgUrl = imageList.get(imgPosition);
                 imgPublish(imgUrl);
+                dismiss();
             }
         });
     }
@@ -66,7 +67,6 @@ public class ImageDialogFragment extends BottomSheetDialogFragment implements Im
         Bundle result = new Bundle();
         result.putString(ARG_IMG, url);
         getParentFragmentManager().setFragmentResult(KEY_IMG, result);
-        dismiss();
     }
 
     @Override
@@ -74,6 +74,7 @@ public class ImageDialogFragment extends BottomSheetDialogFragment implements Im
         imageList = new ArrayList<>();
         imageList.addAll(imgUrlList);
         adapter.setImgUrlList(imageList);
+        adapter.notifyDataSetChanged();
     }
 
     @Override

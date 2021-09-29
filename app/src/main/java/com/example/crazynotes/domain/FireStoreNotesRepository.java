@@ -28,14 +28,6 @@ public class FireStoreNotesRepository implements NotesRepository, ImagesReposito
     public static final String IMG_COLLECTION = "imgUrls";
     public static final String IMG_URL = "url";
 
-    public static final String[] IMG_URLS = {
-            "https://i.ytimg.com/vi/j1HomFU9GAA/maxresdefault.jpg",
-            "https://pbs.twimg.com/media/Eg6kMbfWAAY3cpW.jpg",
-            "https://ufaved.info/upload/iblock/4f8/4f89d3dff002302d68645b8f2a303700.jpg",
-            "https://pbs.twimg.com/media/EjmcgpeVkAAE2TZ.jpg",
-            "https://secure.meetupstatic.com/photos/event/7/b/9/e/600_482911646.jpeg",
-            "https://pbs.twimg.com/media/EvF3lTIWQAYpOOb.jpg"};
-
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
@@ -132,9 +124,7 @@ public class FireStoreNotesRepository implements NotesRepository, ImagesReposito
                         if (task.isSuccessful()) {
                             List<String> imgList = new ArrayList<>();
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                StringBuilder builder = new StringBuilder();
-                                builder.append(document.getString(IMG_URL));
-                                imgList.add(builder.toString());
+                                imgList.add(document.getString(IMG_URL));
                             }
                             callback.onSuccess(imgList);
                         }
