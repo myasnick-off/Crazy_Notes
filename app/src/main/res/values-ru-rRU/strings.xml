@@ -17,4 +17,6 @@
     <string name="note_example">Заметка</string>
     <string name="content_example">Какая-то запись</string>
     <string name="Note_title">Заголовок</string>
+    <string name="save">Сохранить</string>
+    <string name="select_date">Выбрать дату</string>
 </resources>
