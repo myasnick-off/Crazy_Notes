@@ -11,4 +11,10 @@
     <string name="help">Помощь</string>
     <string name="close_drawer">Закрыть</string>
     <string name="open_drawer">Открыть</string>
+    <string name="avatar_img">Аватар</string>
+    <string name="add_action">Добавить</string>
+    <string name="update">Редактировать</string>
+    <string name="note_example">Заметка</string>
+    <string name="content_example">Какая-то запись</string>
+    <string name="Note_title">Заголовок</string>
 </resources>
