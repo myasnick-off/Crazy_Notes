@@ -5,4 +5,10 @@
     <string name="rename">Переименовать</string>
     <string name="copy">Копировать</string>
     <string name="delete">Удалить</string>
+    <string name="user_name">Имя пользователя</string>
+    <string name="settings">Настройки</string>
+    <string name="about">О приложении</string>
+    <string name="help">Помощь</string>
+    <string name="close_drawer">Закрыть</string>
+    <string name="open_drawer">Открыть</string>
 </resources>
