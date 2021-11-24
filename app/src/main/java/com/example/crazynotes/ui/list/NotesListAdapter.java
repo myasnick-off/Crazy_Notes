@@ -35,9 +35,7 @@ public class NotesListAdapter extends ListAdapter<Note, NotesListAdapter.NotesVi
 
     // Интерфейс для обработки событий нажатия на элементы списка
     interface OnNoteClickedListener {
-
         void onNoteClicked(Note note);
-
         void onNoteLongClicked(Note note);
     }
 
